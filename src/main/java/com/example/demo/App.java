@@ -23,9 +23,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @EnableSwagger2
 @SpringBootApplication
@@ -38,18 +39,17 @@ public class App {
     @Bean
     ApplicationRunner inject(EmployeeRepository repository) {
         Faker faker = new Faker(Locale.US);
-        List<Employee> employees = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            String fullName = faker.name().fullName();
-            String email = fullName.replaceAll("[^a-zA-Z ]", "").replace(" ", ".");
-            employees.add(Employee.builder()
-                    .fullName(fullName)
-                    .email(email)
-                    .address(faker.address().fullAddress())
-                    .phone(faker.phoneNumber().cellPhone())
-                    .job(faker.job().position())
-                    .build());
-        }
+        List<Employee> employees =
+                Stream.generate(
+                        () -> Employee.builder()
+                                .fullName(faker.name().fullName())
+                                .job(faker.job().position())
+                                .phone(faker.phoneNumber().cellPhone())
+                                .address(faker.address().fullAddress())
+                                .build()
+                )
+                .limit(50)
+                .collect(Collectors.toList());
         return args -> repository.saveAll(employees);
     }
 
@@ -78,7 +78,6 @@ class Employee implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
-    private String email;
     private String address;
     private String phone;
     private String job;

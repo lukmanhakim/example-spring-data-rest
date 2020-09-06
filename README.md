@@ -20,8 +20,11 @@
 
 #### Endpoints
 
-| Swagger | http://localhost:8080/swagger-ui/ |
-| H2 Console | http://localhost:8080/db |
+| Name       | Endpoint                              |
+| ---------- | ------------------------------------- |
+| Swagger    | http://localhost:8080/swagger-ui/     |
+| H2 Console | http://localhost:8080/db              |
+| Health     | http://localhost:8080/actuator/health |
 
 ---
 
@@ -39,8 +42,6 @@ $ mvn clean spring-boot:run
     ```
     $ mvn clean install
     ```
-    Output Location : 
-    `target/demo-0.0.1-SNAPSHOT.jar` 
 
 * Docker Image
     ```
