@@ -1,0 +1,18 @@
+server.shutdown: graceful
+
+spring:
+    jackson.serialization.indent-output: true
+    lifecycle.timeout-per-shutdown-phase: 20s
+    datasource.url: jdbc:h2:mem:reference
+    h2:
+        console:
+            path: /db
+            enabled: true
+            settings.web-allow-others: true
+    jpa:
+        show-sql: true
+        open-in-view: off
+        hibernate.ddl-auto: update
+        properties.hibernate.format_sql: true
+
+management.endpoint.health.show-details: always
